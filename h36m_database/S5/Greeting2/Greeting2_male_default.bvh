@@ -1,55 +1,55 @@
 HIERARCHY
 ROOT Hips
 {
-	OFFSET 0.00000 0.00000 0.00000
+	OFFSET 0.000000 0.000000 0.000000 
 	CHANNELS 6 Xposition Yposition Zposition Yrotation Zrotation Xrotation 
 	JOINT Lumbar
 	{
-		OFFSET 0 0 0
+		OFFSET 0.000000 0.000000 0.000000 
 		CHANNELS 3 Zrotation Xrotation Yrotation
 		JOINT Neck
 		{
-			OFFSET 0.00 0.2701 0.00
+			OFFSET 0.000000 0.445665 0.000000 
 			CHANNELS 3 Zrotation Xrotation Yrotation
 			End Site
 			{
-				OFFSET 0.00 0.1379 0.00
+				OFFSET 0.000000 0.227535 0.000000 
 			}
 		}
 		JOINT RightShoulder
 		{
-			OFFSET 0.0119 0.2289 0.1181
+			OFFSET 0.019635 0.377685 0.194865 
 			CHANNELS 3 Zrotation Xrotation Yrotation
 			JOINT RightElbow
 			{
-				OFFSET 0.00 -0.1475 0.00
+				OFFSET 0.000000 -0.243375 0.000000 
 				CHANNELS 2 Zrotation Yrotation
 				JOINT RightWrist
 				{
-					OFFSET 0.00 -0.1605 0.00
+					OFFSET 0.000000 -0.264825 0.000000 
 					CHANNELS 2 Zrotation Xrotation
 					End Site
 					{
-						OFFSET 0.0040 -0.1068 0.0006
+						OFFSET 0.006600 -0.176220 0.000990 
 					}
 				}
 			}
 		}
 		JOINT LeftShoulder
 		{
-			OFFSET 0.0119 0.2289 -0.1181
+			OFFSET 0.019635 0.377685 -0.194865 
 			CHANNELS 3 Zrotation Xrotation Yrotation
 			JOINT LeftElbow
 			{
-				OFFSET 0.00 -0.1475 0.00
+				OFFSET 0.000000 -0.243375 0.000000 
 				CHANNELS 2 Zrotation Yrotation
 				JOINT LeftWrist
 				{
-					OFFSET 0.00 -0.1605 0.00
+					OFFSET 0.000000 -0.264825 0.000000 
 					CHANNELS 2 Zrotation Xrotation
 					End Site
 					{
-						OFFSET 0.0040 -0.1068 -0.0006
+						OFFSET 0.006600 -0.176220 -0.000990 
 					}
 				}
 			}
@@ -57,38 +57,38 @@ ROOT Hips
 	}
 	JOINT RightHip
 	{
-		OFFSET 0.0316 -0.0424 0.0458
+		OFFSET 0.052140 -0.069960 0.075570 
 		CHANNELS 3 Zrotation Xrotation Yrotation
 		JOINT RightKnee
 		{
-			OFFSET 0.00 -0.2438 0.00
+			OFFSET 0.000000 -0.402270 0.000000 
 			CHANNELS 1 Zrotation
 			JOINT RightAnkle
 			{
-				OFFSET 0.00 -0.2449 0.00
+				OFFSET 0.000000 -0.404085 0.000000 
 				CHANNELS 3 Zrotation Xrotation Yrotation
 				End Site
 				{
-					OFFSET 0.1237 -0.0542 0.0051
+					OFFSET 0.204105 -0.089430 0.008415 
 				}
 			}
 		}
 	}
 	JOINT LeftHip
 	{
-		OFFSET 0.0316 -0.0424 -0.0458
+		OFFSET 0.052140 -0.069960 -0.075570 
 		CHANNELS 3 Zrotation Xrotation Yrotation
 		JOINT LeftKnee
 		{
-			OFFSET 0.00 -0.2438 0.00
+			OFFSET 0.000000 -0.402270 0.000000 
 			CHANNELS 1 Zrotation
 			JOINT LeftAnkle
 			{
-				OFFSET 0.00 -0.2449 0.00
+				OFFSET 0.000000 -0.404085 0.000000 
 				CHANNELS 3 Zrotation Xrotation Yrotation
 				End Site
 				{
-					OFFSET 0.1237 -0.0542 -0.0051
+					OFFSET 0.204105 -0.089430 -0.008415 
 				}
 			}
 		}
