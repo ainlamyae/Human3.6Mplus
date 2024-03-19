@@ -1,4 +1,4 @@
-# 3D-HuMove-Database
+# Human3.6M+
 Synthetic kinematic, kinetic, and muscle of 3D human motion: For 3D human pose, motion, and kinetic estimation
 
 # Usage requirement
