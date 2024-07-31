@@ -1,18 +1,17 @@
 # Human3.6M+
-Synthetic kinematic, kinetic, and muscle of 3D human motion: For 3D human pose, motion, and kinetic estimation
+Using musculoskeletal models to generate physically-consistent data for 3D human pose, kinematic, dynamic, and muscle estimation
 
 # Usage requirement
 To use this database you must cite the following source paper:
 
-Nasr, A., Hashemi, A., & McPhee, J. (2023). Scalable musculoskeletal model for dynamic simulations of upper body movement. Computer Methods in Biomechanics and Biomedical Engineering, 1-32.
+Nasr, A., Zhu, K., & McPhee, J. (2024). Using musculoskeletal models to generate physically-consistent data for 3D human pose, kinematic, dynamic, and muscle estimation, Springer, Multibody Dynamic Systems.
 
 ```
-@article{nasr2023scalable,
-  title={Scalable musculoskeletal model for dynamic simulations of upper body movement},
-  author={Nasr, Ali and Hashemi, Arash and McPhee, John},
-  journal={Computer Methods in Biomechanics and Biomedical Engineering},
-  pages={1--32},
-  year={2023},
-  publisher={Taylor \& Francis} 
+@article{nasr2024using,
+  title={Using musculoskeletal models to generate physically-consistent data for 3D human pose, kinematic, dynamic, and muscle estimation},
+  author={Nasr, Ali and Zhu, Kevin and McPhee, John},
+  journal={Multibody Dynamic Systems},
+  year={2024},
+  publisher={Springer} 
 }
 ```
