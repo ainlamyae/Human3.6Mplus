@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human3.6M+ — Physically-consistent kinematic, dynamic &amp; muscle data</title>
+<meta name="description" content="Human3.6M+: synthetic kinematic, dynamic, and muscle data for 3D human pose and motion estimation, generated from Human3.6M using a 40-DoF musculoskeletal model.">
+<link rel="icon" href="data:,">
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-alt:#ffffff;
+    --ink:#1c1d1f;
+    --ink-soft:#54565b;
+    --ink-faint:#8a8d93;
+    --line:#e0e0dd;
+    --accent:#7a2ff0;
+    --accent-ink:#ffffff;
+    --accent-soft:#f5f0ff;
+    --teal:#0f7a72;
+    --amber:#b5680a;
+    --code-bg:#1c1d1f;
+    --code-ink:#e9e9ea;
+    --shadow: 0 1px 2px rgba(20,20,20,.04), 0 8px 20px rgba(20,20,20,.04);
+    --radius:14px;
+    --maxw:920px;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    overflow-x:hidden;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code, pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* Hero */
+  .hero{
+    padding:88px 0 56px;
+    border-bottom:1px solid var(--line);
+    background:var(--bg);
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--teal);margin-bottom:18px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
+  h1{
+    font-size:clamp(34px,6vw,52px);
+    line-height:1.05;
+    letter-spacing:-0.02em;
+    margin:0 0 16px;
+  }
+  h1 .plus{color:var(--accent)}
+  .tagline{
+    font-size:19px;color:var(--ink-soft);max-width:640px;margin:0 0 28px;
+  }
+  .authors{font-size:14.5px;color:var(--ink-faint);margin:0 0 28px}
+  .authors b{color:var(--ink-soft);font-weight:600}
+
+  .badges{display:flex;flex-wrap:wrap;gap:10px}
+  .badge{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:9px 14px;border-radius:999px;
+    background:var(--bg-alt);border:1px solid var(--line);
+    font-size:13.5px;font-weight:600;color:var(--ink);
+    box-shadow:var(--shadow);
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .badge:hover{transform:translateY(-1px);border-color:var(--accent);text-decoration:none}
+  .badge svg{width:15px;height:15px;flex:none}
+  .badge.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+  .badge.primary svg{stroke:var(--accent-ink)}
+
+  /* Sections */
+  section{padding:56px 0}
+  section + section{border-top:1px solid var(--line)}
+  .kicker{
+    font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-faint);margin:0 0 10px;
+  }
+  h2{font-size:26px;letter-spacing:-.01em;margin:0 0 18px}
+  p{color:var(--ink-soft);margin:0 0 14px}
+  .lede{font-size:17px}
+
+  .abstract{
+    background:var(--bg-alt);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 28px;box-shadow:var(--shadow);
+  }
+  .abstract p{color:var(--ink);margin:0}
+  .keywords{margin-top:16px;padding-top:16px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--ink-faint)}
+  .keywords b{color:var(--ink-soft)}
+
+  /* Stat grid */
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:14px;margin-top:8px;
+  }
+  .stat{
+    background:var(--bg-alt);border:1px solid var(--line);border-radius:12px;
+    padding:18px 16px;box-shadow:var(--shadow);
+  }
+  .stat .num{font-size:28px;font-weight:700;letter-spacing:-.02em;color:var(--accent)}
+  .stat .lbl{font-size:13px;color:var(--ink-faint);margin-top:4px}
+
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:22px}
+  .fact{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--bg-alt)}
+  .fact h3{margin:0 0 6px;font-size:14.5px;color:var(--ink)}
+  .fact p{margin:0;font-size:14px;color:var(--ink-faint)}
+
+  /* Output tag chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .chip{
+    font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:8px;
+    background:var(--accent-soft);color:var(--accent);border:1px solid transparent;
+  }
+
+  /* Pipeline */
+  .pipeline{margin-top:24px}
+  .pipeline svg{width:100%;height:auto;display:block}
+  .stage-caption{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px;
+  }
+  .stage-caption div{font-size:13px;color:var(--ink-faint);text-align:center;padding:0 4px}
+  .stage-caption b{display:block;color:var(--ink-soft);font-size:13.5px;margin-bottom:3px}
+
+  /* DoF table */
+  table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+  caption{text-align:left;color:var(--ink-faint);font-size:13px;margin-bottom:10px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--ink-faint);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em}
+  tbody tr:hover{background:var(--bg-alt)}
+  td.num, th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tfoot td{font-weight:700;border-bottom:none;border-top:2px solid var(--line);color:var(--ink)}
+
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  .note{
+    font-size:13.5px;color:var(--ink-faint);border-left:3px solid var(--line);
+    padding:4px 0 4px 14px;margin-top:16px;
+  }
+
+  ul.limits{margin:8px 0 0;padding-left:0;list-style:none}
+  ul.limits li{
+    position:relative;padding:10px 0 10px 26px;border-bottom:1px solid var(--line);
+    color:var(--ink-soft);font-size:14.5px;
+  }
+  ul.limits li:last-child{border-bottom:none}
+  ul.limits li::before{
+    content:"–";position:absolute;left:0;color:var(--amber);font-weight:700;
+  }
+  ul.limits li b{color:var(--ink)}
+
+  /* Citation */
+  .cite-block{
+    background:var(--bg-alt);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;box-shadow:var(--shadow);
+  }
+  .cite-text{font-size:14.5px;color:var(--ink-soft);margin:0 0 16px}
+  .code-wrap{position:relative}
+  pre{
+    background:var(--code-bg);color:var(--code-ink);
+    padding:20px 20px 20px;border-radius:10px;
+    font-size:13px;line-height:1.65;overflow-x:auto;margin:0;
+  }
+  .copy-btn{
+    position:absolute;top:10px;right:10px;
+    background:rgba(255,255,255,.08);color:var(--code-ink);
+    border:1px solid rgba(255,255,255,.18);border-radius:7px;
+    padding:6px 11px;font-size:12.5px;font-weight:600;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .copy-btn:hover{background:rgba(255,255,255,.16)}
+  .copy-btn svg{width:13px;height:13px}
+
+  .usage-req{
+    margin-top:18px;padding:14px 16px;border-radius:10px;
+    background:var(--accent-soft);color:var(--ink);font-size:13.5px;
+    border:1px solid transparent;
+  }
+  .usage-req b{color:var(--accent)}
+
+  /* Footer */
+  footer{padding:40px 0 60px}
+  .foot-links{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:18px;font-size:14px}
+  footer p{font-size:13px;color:var(--ink-faint);margin:0}
+
+  ::selection{background:var(--accent);color:var(--accent-ink)}
+
+  @media (max-width:640px){
+    .hero{padding:56px 0 40px}
+    section{padding:40px 0}
+    .stage-caption{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>Dataset &amp; research code</div>
+    <h1>Human3.6M<span class="plus">+</span></h1>
+    <p class="tagline">Synthetic kinematic, dynamic, and muscle data for 3D human pose and motion estimation — generated from the Human3.6M dataset with a 40‑DoF musculoskeletal model.</p>
+    <p class="authors"><b>Ali Nasr</b> · <b>Kevin Zhu</b> · <b>John McPhee</b> — Department of Systems Design Engineering, University of Waterloo</p>
+    <div class="badges">
+      <a class="badge primary" href="https://doi.org/10.1007/s11044-024-10021-5" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M10 14 21 3"/><path d="M21 14v7H3V3h7"/></svg>
+        Read the paper
+      </a>
+      <a class="badge" href="https://github.com/ainlamyae/Human3.6Mplus" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.71 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.05 11.05 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.44-2.7 5.42-5.27 5.7.42.36.78 1.07.78 2.17v3.21c0 .3.21.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
+        GitHub repository
+      </a>
+      <a class="badge" href="https://uwaterloo.ca/motion-research-group" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+        Motion Research Group
+      </a>
+      <span class="badge" title="Public domain">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Unlicense (public domain)
+      </span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="abstract">
+    <div class="wrap">
+      <div class="kicker">Abstract</div>
+      <div class="abstract">
+        <p>Human motion capture technology is utilized in many industries, including entertainment, sports, medicine, augmented reality, virtual reality, and robotics. However, motion capture data only allows the user to analyze human movement at a kinematic level. In order to study the corresponding dynamics and muscle properties, additional sensors such as force plates and electromyography sensors are needed — collecting, processing, and synchronizing data from multiple sources can be laborious and time‑consuming.</p>
+        <p>This study proposes a method to generate the dynamics and muscle properties of existing motion capture datasets. Our method reconstructs motions via kinematics, dynamics, and muscle modeling with a musculoskeletal model consisting of <b>14 joints, 40 degrees of freedom, and 15 segments</b>. Compared to current physics simulators, our method also infers muscle properties to ensure the human model is realistic, and meets International Society of Biomechanics (ISB) standards for all terminologies and representations.</p>
+        <p>The integrated musculoskeletal model allows the user to pre‑select various anthropometric features of the person performing the motion — height, mass, level of athleticism, handedness, and skin temperature — which are often infeasible to estimate from monocular video without appropriate annotations. We apply our method to the Human3.6M dataset and show that our reconstructed motion is kinematically similar to the ground‑truth markers while being dynamically plausible when compared to experimental data found in the literature. The generated data (<b>Human3.6M+</b>) is available for download.</p>
+        <div class="keywords"><b>Keywords —</b> Human 3D pose estimation · Human 3D motion estimation · Muscle torque generator</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dataset">
+    <div class="wrap">
+      <div class="kicker">What's in the dataset</div>
+      <h2>A drop-in dynamics &amp; muscle layer for Human3.6M</h2>
+      <p class="lede">Every motion in Human3.6M is reconstructed through the same musculoskeletal model and re-exported with twelve additional signal types — from raw joint kinematics to inferred muscle activation — on top of the original mocap.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="num">14</div><div class="lbl">joints</div></div>
+        <div class="stat"><div class="num">40</div><div class="lbl">degrees of freedom</div></div>
+        <div class="stat"><div class="num">15</div><div class="lbl">body segments</div></div>
+        <div class="stat"><div class="num">7</div><div class="lbl">subjects (S1,5,6,7,8,9,11)</div></div>
+        <div class="stat"><div class="num">15</div><div class="lbl">actions per subject</div></div>
+        <div class="stat"><div class="num">50 Hz</div><div class="lbl">frame rate</div></div>
+      </div>
+
+      <div class="facts">
+        <div class="fact">
+          <h3>Formats</h3>
+          <p>CSV tables, BioVision Hierarchy (BVH), and short video clips for every reconstructed motion.</p>
+        </div>
+        <div class="fact">
+          <h3>Subject variants</h3>
+          <p>Male &amp; female, each with a default-anthropometry version (25 yr, 70 kg, 1.70 m, right-handed) and a dimensionless (height/weight-normalized) version.</p>
+        </div>
+        <div class="fact">
+          <h3>Skeleton compatibility</h3>
+          <p>Built to ISB standards, which conveniently yields a pose layout close to the SMPL skeleton — 13 joints are directly comparable.</p>
+        </div>
+        <div class="fact">
+          <h3>Source motions</h3>
+          <p>Directions, Discussion, Eating, Greeting, Phoning, Posing, Purchases, Sitting, Sitting&nbsp;Down, Smoking, Taking&nbsp;Photo, Waiting, Walking, Walking&nbsp;the&nbsp;Dog, Walking&nbsp;Together.</p>
+        </div>
+      </div>
+
+      <div class="chips">
+        <span class="chip">① Joint coordinates</span>
+        <span class="chip">② ISB data (BVH)</span>
+        <span class="chip">③ 3D marker locations</span>
+        <span class="chip">④ Ground contact bool.</span>
+        <span class="chip">⑤ Joint velocity</span>
+        <span class="chip">⑥ Joint acceleration</span>
+        <span class="chip">⑦ Ground reaction wrench</span>
+        <span class="chip">⑧ Joint ideal torque</span>
+        <span class="chip">⑨ Joint passive torque</span>
+        <span class="chip">⑩ Joint active torque</span>
+        <span class="chip">⑪ Activation signals</span>
+        <span class="chip">⑫ Excitation signals</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="pipeline">
+    <div class="wrap">
+      <div class="kicker">How it's generated</div>
+      <h2>Three-model reconstruction pipeline</h2>
+      <p class="lede">Raw 3D markers from Human3.6M are passed through a serial chain of kinematic, dynamic, and muscle models — each stage's optimized output feeds the next.</p>
+
+      <div class="pipeline">
+        <svg viewBox="0 0 920 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pipeline: 3D markers into kinematic, dynamic and muscle models producing twelve output signal types">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-faint)"></path>
+            </marker>
+          </defs>
+          <!-- input -->
+          <rect x="4" y="75" width="118" height="60" rx="10" fill="var(--bg-alt)" stroke="var(--line)"></rect>
+          <text x="63" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">3D markers</text>
+          <text x="63" y="118" text-anchor="middle" font-size="10.5" fill="var(--ink-faint)">(Human3.6M mocap)</text>
+
+          <line x1="122" y1="105" x2="168" y2="105" stroke="var(--ink-faint)" stroke-width="1.6" marker-end="url(#arrow)"></line>
+
+          <!-- kinematic -->
+          <rect x="170" y="45" width="200" height="120" rx="12" fill="var(--accent-soft)" stroke="var(--accent)"></rect>
+          <text x="270" y="75" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent)">Kinematic model</text>
+          <text x="270" y="93" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">ISB skeleton fit,</text>
+          <text x="270" y="108" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">static optimization</text>
+          <text x="270" y="130" text-anchor="middle" font-size="10" fill="var(--ink-faint)">→ ① ② ③ ④ ⑤ ⑥</text>
+
+          <line x1="372" y1="105" x2="418" y2="105" stroke="var(--ink-faint)" stroke-width="1.6" marker-end="url(#arrow)"></line>
+
+          <!-- dynamic -->
+          <rect x="420" y="45" width="200" height="120" rx="12" fill="var(--accent-soft)" stroke="var(--accent)"></rect>
+          <text x="520" y="75" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent)">Dynamic model</text>
+          <text x="520" y="93" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">inverse dynamics,</text>
+          <text x="520" y="108" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">ground reaction wrench</text>
+          <text x="520" y="130" text-anchor="middle" font-size="10" fill="var(--ink-faint)">→ ⑦ ⑧ ⑨</text>
+
+          <line x1="622" y1="105" x2="668" y2="105" stroke="var(--ink-faint)" stroke-width="1.6" marker-end="url(#arrow)"></line>
+
+          <!-- muscle -->
+          <rect x="670" y="45" width="200" height="120" rx="12" fill="var(--accent-soft)" stroke="var(--accent)"></rect>
+          <text x="770" y="75" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent)">Muscle model</text>
+          <text x="770" y="93" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Hill-type MTG,</text>
+          <text x="770" y="108" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">activation dynamics</text>
+          <text x="770" y="130" text-anchor="middle" font-size="10" fill="var(--ink-faint)">→ ⑩ ⑪ ⑫</text>
+        </svg>
+      </div>
+
+      <p class="note">Simplified for clarity — see Fig. 1–2 and §3–6 of the paper for the full optimization-based pipeline, including anthropometric scaling, joint-limit constraints, and the activation/excitation dynamics.</p>
+    </div>
+  </section>
+
+  <section id="dof">
+    <div class="wrap">
+      <div class="kicker">Model anatomy</div>
+      <h2>40 DoFs across 15 segments</h2>
+      <p class="lede">Degrees of freedom were chosen to represent full-body motion while staying within what's biomechanically documented in the literature, per ISB conventions.</p>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Region</th><th>Degrees of freedom</th><th class="num">Count</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Pelvis</td><td>3 translations + 3 rotations (global pose)</td><td class="num">6</td></tr>
+            <tr><td>Torso</td><td>Flexion/extension, lateral flexion, axial rotation</td><td class="num">3</td></tr>
+            <tr><td>Neck</td><td>Flexion/extension, lateral flexion, axial rotation</td><td class="num">3</td></tr>
+            <tr><td>Shoulders (×2)</td><td>Flexion/extension, adduction/abduction, medial/lateral rotation</td><td class="num">6</td></tr>
+            <tr><td>Elbows (×2)</td><td>Flexion/extension, pronation/supination</td><td class="num">4</td></tr>
+            <tr><td>Wrists (×2)</td><td>Flexion/extension, radial/ulnar deviation</td><td class="num">4</td></tr>
+            <tr><td>Hips (×2)</td><td>Flexion/extension, adduction/abduction, internal/external rotation</td><td class="num">6</td></tr>
+            <tr><td>Knees (×2)</td><td>Flexion/extension</td><td class="num">2</td></tr>
+            <tr><td>Ankles (×2)</td><td>Dorsi/plantar flexion, eversion/inversion, adduction/abduction</td><td class="num">6</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="2">Total</td><td class="num">40</td></tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="wrap">
+      <div class="kicker">Motivation</div>
+      <h2>Why generate dynamics and muscle data at all?</h2>
+      <p>Marker-based and marker-less motion capture both give you <b>kinematics</b> — where the joints are over time. They don't tell you the <b>dynamics</b> (joint torques, ground reaction forces) or <b>muscle activity</b> behind the motion, which normally requires force plates and EMG sensors collected, cleaned, and synchronized alongside the video — a slow, expensive process that has kept force-annotated motion datasets rare.</p>
+      <p>Physics-based pose estimators try to work around this by enforcing physical plausibility with general-purpose simulators and simplified rigid-body human models, but those bodies look nothing like the parametric human models (e.g. SMPL) used elsewhere in pose and shape estimation, and they can't produce muscle-level signals at all.</p>
+      <p>Human3.6M+ instead reconstructs each Human3.6M motion through a full ISB-standard musculoskeletal model — kinematics, then inverse dynamics, then a Hill-type muscle-torque-generator layer — so the same motion capture data now comes with physically-consistent joint torques and inferred muscle activation/excitation signals, ready to use as training or validation data for physics-based 3D human pose, shape, and motion estimation.</p>
+    </div>
+  </section>
+
+  <section id="eval">
+    <div class="wrap">
+      <div class="kicker">Evaluation</div>
+      <h2>How close is the reconstruction to the ground truth?</h2>
+      <p>Averaged across all 15 actions for a female subject with default anthropometrics (Table 12 in the paper). Positional error includes ~27.8&nbsp;mm of irreducible error from the structural difference between this model's skeleton and the SMPL skeleton used for comparison.</p>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Metric</th><th class="num">Value</th><th>What it measures</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>MPJPE</td><td class="num">67.7&nbsp;mm</td><td>Mean per-joint position error vs. ground truth (Protocol 1)</td></tr>
+            <tr><td>PA-MPJPE</td><td class="num">56.1&nbsp;mm</td><td>Procrustes-aligned MPJPE (Protocol 2)</td></tr>
+            <tr><td>Velocity error</td><td class="num">0.20&nbsp;m/s</td><td>Motion smoothness vs. ground truth</td></tr>
+            <tr><td>Acceleration error</td><td class="num">1.62&nbsp;m/s²</td><td>Jitter vs. ground truth</td></tr>
+            <tr><td>Mean ground reaction force</td><td class="num">108.8% BW*</td><td>Plausibility vs. experimental gait literature (~80% BW expected)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">*Reported as a percentage of body weight (BW), averaged over the columns in Table 12; the paper separately notes a mean GRF of ~72.7% BW for non-sitting motions specifically. Ground-penetration, floating, and foot-skating rates are also reported per-action in the paper — see §7.1 for the full breakdown and discussion.</p>
+    </div>
+  </section>
+
+  <section id="limits">
+    <div class="wrap">
+      <div class="kicker">Limitations</div>
+      <h2>What to keep in mind</h2>
+      <ul class="limits">
+        <li><b>Limited variability</b> — Human3.6M covers a finite set of ~3.6M poses; it won't generalize to novel or uncommon poses on its own.</li>
+        <li><b>Limited diversity</b> — the source dataset's subjects don't cover the full range of age, sex, body type, or clothing.</li>
+        <li><b>No ground-truth force verification</b> — ground reaction wrenches are estimated, not measured, since Human3.6M has no force-plate data.</li>
+        <li><b>Static/temporal limits</b> — doesn't model age-related change over time, and fast dynamic activities (sports, dance) benefit from higher-rate capture than what's available here.</li>
+        <li><b>Zero muscle co-contraction assumed</b> — activation signals assume no agonist/antagonist co-contraction, which real sEMG data shows does occur.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="cite">
+    <div class="wrap">
+      <div class="kicker">Usage &amp; citation</div>
+      <h2>Using this dataset</h2>
+      <div class="cite-block">
+        <p class="cite-text">This database is free to use (public domain / Unlicense) — the only requirement is that you cite the source paper:</p>
+        <div class="code-wrap">
+          <button class="copy-btn" id="copyBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span id="copyLabel">Copy</span>
+          </button>
+          <pre id="bibtex">@article{nasr2024using,
+  title={Using musculoskeletal models to generate physically-consistent data for 3D human pose, kinematic, dynamic, and muscle estimation},
+  author={Nasr, Ali and Zhu, Kevin and McPhee, John},
+  journal={Multibody System Dynamics},
+  year={2024},
+  publisher={Springer}
+}</pre>
+        </div>
+        <div class="usage-req"><b>Note</b> — data is provided as-is under the Unlicense; citing the paper is a condition of use requested by the authors, not a legal license restriction.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="https://doi.org/10.1007/s11044-024-10021-5" target="_blank" rel="noopener">Paper (DOI)</a>
+      <a href="https://github.com/ainlamyae/Human3.6Mplus" target="_blank" rel="noopener">GitHub repository</a>
+      <a href="https://uwaterloo.ca/motion-research-group" target="_blank" rel="noopener">Motion Research Group</a>
+      <a href="http://vision.imar.ro/human3.6m" target="_blank" rel="noopener">Original Human3.6M dataset</a>
+    </div>
+    <p>Ali Nasr, Kevin Zhu, John McPhee — University of Waterloo. Data released under the Unlicense (public domain).</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var text = document.getElementById('bibtex').textContent;
+    var label = document.getElementById('copyLabel');
+    navigator.clipboard.writeText(text).then(function () {
+      label.textContent = 'Copied';
+      setTimeout(function () { label.textContent = 'Copy'; }, 1600);
+    });
+  });
+</script>
+
+</body>
+</html>
